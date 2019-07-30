@@ -1,0 +1,10 @@
+#cloud-config
+package_upgrade: true
+users:
+  - name: user
+    groups: wheel
+    lock_passwd: false
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDX4jJ62OQbx+98rjoxGtQl0UU8ytvsqamweIM2hkqMzhppVRJH0ugO6hN/suSzznEAeQkecW+hVSY2qqYsRaiWapKX9xJkLOBY8a8oCiYtv5616m3tPOT/8kl1xbTcvzb8LKBRP1LbEL/w5PKzh4CqeN16rdJO4+w354biwabIqmnGOe7qZ97/BqN9z5XcinSGA8lJSOR7P/P6GHVpA1xFtIm3R6GFO6YyhGuJzpW237I337GM6pWmoAx7sBx07bSAbyu6jexJx4bIE4F42v9hVzuoJvbC5f1lwxGLfBuP3WXGBjlQFDhrXMlOPCiY7RSFr7D1RLJEZEY0SFAvrGqT

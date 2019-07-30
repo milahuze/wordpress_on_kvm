@@ -1,0 +1,76 @@
+---
+# tasks file for guest
+- name: Install a list of KVM packages
+  apt:
+    name: "{{ kvm_packages }}"
+  become: yes
+  delegate_to: 127.0.0.1
+  run_once: true
+
+- name: Start service libvirtd, if not started
+  become: yes
+  service:
+    name: libvirtd
+    state: started
+  delegate_to: 127.0.0.1
+  run_once: true
+
+- name: Create temp directory for image download
+  file:
+    path: /tmp/image
+    state: directory
+  delegate_to: 127.0.0.1
+  run_once: true    
+
+- name: Check if image exists
+  stat: path="/tmp/image/{{os_image}}"
+  register: image_exist
+  delegate_to: 127.0.0.1
+  run_once: true  
+
+
+- name: Get image for guest
+  get_url: 
+    url="{{os_source_url}}{{os_image}}" 
+    dest=/tmp/image/
+    validate_certs=no
+  when: image_exist.stat.exists == False    
+  delegate_to: 127.0.0.1
+  run_once: true
+
+- name: Create domain directory for {{inventory_hostname}}
+  become: yes
+  file:
+    path: "/var/lib/libvirt/images/{{inventory_hostname}}"
+    state: directory
+  delegate_to: 127.0.0.1
+
+- name: Copy user configuration to guest directory
+  become: yes
+  copy:
+    src: ../files/cloud.yml
+    dest: "/var/lib/libvirt/images/{{inventory_hostname}}/cloud.yml"
+    force: yes
+  delegate_to: 127.0.0.1
+
+
+- name: Template network config to guest directory
+  become: yes
+  template:
+    src: ../templates/net.yml.j2
+    dest: "/var/lib/libvirt/images/{{inventory_hostname}}/net.yml"
+  delegate_to: 127.0.0.1
+
+- name: Convert image for guest OS
+  become: yes
+  local_action: command qemu-img convert -f qcow2 "/tmp/image/{{os_image}}" "/var/lib/libvirt/images/{{inventory_hostname}}/os.img"
+
+
+- name: Create image for cloud-init configuration
+  become: yes
+  local_action: command cloud-localds -N "/var/lib/libvirt/images/{{inventory_hostname}}/net.yml" "/var/lib/libvirt/images/{{inventory_hostname}}/cloudvm.iso" "/var/lib/libvirt/images/{{inventory_hostname}}/cloud.yml"
+
+- name: Run guest VM
+  become: yes
+  local_action: command virt-install --ram "{{guest_ram}}" --vcpus "{{guest_cpu}}" --name "{{inventory_hostname}}" --disk "/var/lib/libvirt/images/{{inventory_hostname}}/os.img" --disk "/var/lib/libvirt/images/{{inventory_hostname}}/cloudvm.iso",device=cdrom --graphics none --network bridge=virbr0 --import
+

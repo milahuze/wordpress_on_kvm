@@ -1,0 +1,19 @@
+---
+# vars file for guest
+
+kvm_packages:
+  - qemu-kvm
+  - libvirt-clients
+  - libvirt-daemon-system
+  - bridge-utils
+  - libguestfs-tools
+  - genisoimage
+  - virtinst
+  - libosinfo-bin
+  - cloud-utils
+
+os_source_url: "https://cloud-images.ubuntu.com/xenial/current/"
+os_image: "xenial-server-cloudimg-amd64-disk1.img"
+
+guest_ram: 1024
+guest_cpu: 2

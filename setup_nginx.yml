@@ -1,0 +1,11 @@
+- hosts: guest
+  gather_facts: true
+
+- hosts: 127.0.0.1
+  gather_facts: true
+  connection: local
+  become: yes
+  roles:
+    - geerlingguy.nginx 
+
+

@@ -1,0 +1,6 @@
+#Specify host machine IPs and guest machine IPs here
+[host]
+127.0.0.1
+[guest]
+192.168.122.122
+192.168.122.123

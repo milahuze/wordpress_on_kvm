@@ -1,0 +1,12 @@
+version: 1
+config:
+  - type: nameserver
+    address:
+      - 8.8.8.8
+  - type: physical
+    name: ens2
+    subnets:
+     - control: auto
+       type: static
+       address: {{inventory_hostname}}/24
+       gateway: 192.168.122.1
