@@ -1,7 +1,5 @@
 - hosts: guest
   become: yes
-  vars_files:
-    - vars/main.yml
   roles:
      - guest
 
