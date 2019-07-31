@@ -1,5 +1,5 @@
 # wordpress_on_kvm
-1. Ansible repository is supposed to work from hypervisor machine which is stated as 127.0.0.1 in repo.
+1. Ansible repository is supposed to work from hypervisor machine which is stated as 127.0.0.1 in repo. It is supposed that Debian is installed on hypervisor.
 2. To create guest VMs with static IPs, their IPs should be added to group 'guest' in hosts file and playbook should be executed:
 * ansible-playbook start_guests.yml
 Please note that stopping of guests and releasing IP addresses were not implemented as not requested in task.
