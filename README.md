@@ -11,3 +11,5 @@ Please note that stopping of guests and releasing IP addresses were not implemen
 * ansible-playbook install_securityupdates.yml
 6. To configure IPTABLES on guest VMs: *under construction*
 
+
+
